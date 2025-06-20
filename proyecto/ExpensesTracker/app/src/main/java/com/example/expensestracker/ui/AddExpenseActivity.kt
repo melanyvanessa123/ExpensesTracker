@@ -7,14 +7,26 @@ import android.app.DatePickerDialog
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.expensestracker.databinding.ActivityAddExpenseBinding
+import com.example.expensestracker.model.Expense
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
 class AddExpenseActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddExpenseBinding
     private val calendar = Calendar.getInstance()
     private val dateFormatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+
+    private val auth = FirebaseAuth.getInstance()
+    private val db = FirebaseFirestore.getInstance()
+    private val expensesCollection = db.collection("expenses")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +38,6 @@ class AddExpenseActivity : AppCompatActivity() {
     }
 
     private fun setupViews() {
-
         val categories = arrayOf(
             "Alimentación",
             "Vestimenta",
@@ -47,33 +58,35 @@ class AddExpenseActivity : AppCompatActivity() {
     }
 
     private fun setupListeners() {
+
         binding.dateEditText.setOnClickListener {
             showDatePicker()
         }
 
+
         binding.saveButton.setOnClickListener {
             if (validateFields()) {
-                saveExpense()
+                saveExpenseToFirestore()
             }
         }
     }
 
     private fun showDatePicker() {
-        val datePickerDialog = DatePickerDialog(
+        DatePickerDialog(
             this,
-            { _, year, month, dayOfMonth ->
+            { _, year, month, day ->
                 calendar.set(Calendar.YEAR, year)
                 calendar.set(Calendar.MONTH, month)
-                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                calendar.set(Calendar.DAY_OF_MONTH, day)
                 updateDateInView()
             },
             calendar.get(Calendar.YEAR),
             calendar.get(Calendar.MONTH),
             calendar.get(Calendar.DAY_OF_MONTH)
-        )
-
-        datePickerDialog.datePicker.maxDate = System.currentTimeMillis()
-        datePickerDialog.show()
+        ).apply {
+            datePicker.maxDate = System.currentTimeMillis()
+            show()
+        }
     }
 
     private fun updateDateInView() {
@@ -90,7 +103,8 @@ class AddExpenseActivity : AppCompatActivity() {
         binding.categoryInputLayout.error = null
 
 
-        if (binding.descriptionEditText.text.toString().trim().isEmpty()) {
+        val description = binding.descriptionEditText.text.toString().trim()
+        if (description.isEmpty()) {
             binding.descriptionInputLayout.error = "La descripción es requerida"
             isValid = false
         }
@@ -124,20 +138,58 @@ class AddExpenseActivity : AppCompatActivity() {
         return isValid
     }
 
-    private fun saveExpense() {
-        try {
-            val description = binding.descriptionEditText.text.toString().trim()
-            val amount = binding.amountEditText.text.toString().trim().toDouble()
-            val date = binding.dateEditText.text.toString().trim()
-            val category = binding.categoryAutoComplete.text.toString().trim()
+    private fun saveExpenseToFirestore() {
+        val currentUser = auth.currentUser
+        if (currentUser == null) {
+            Toast.makeText(this, "Error: Usuario no autenticado", Toast.LENGTH_SHORT).show()
+            return
+        }
 
 
+        val description = binding.descriptionEditText.text.toString().trim()
+        val amount = binding.amountEditText.text.toString().trim().toDouble()
+        val date = binding.dateEditText.text.toString().trim()
+        val category = binding.categoryAutoComplete.text.toString().trim()
 
-            Toast.makeText(this, "Gasto guardado exitosamente", Toast.LENGTH_SHORT).show()
-            finish()
 
-        } catch (e: Exception) {
-            Toast.makeText(this, "Error al guardar el gasto", Toast.LENGTH_SHORT).show()
+        val expenseId = expensesCollection.document().id
+
+
+        val expense = Expense(
+            id = expenseId,
+            description = description,
+            amount = amount,
+            date = date,
+            category = category,
+            userId = currentUser.uid,
+            createdAt = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date()),
+            timestamp = System.currentTimeMillis()
+        )
+
+
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                expensesCollection.document(expenseId)
+                    .set(expense)
+                    .await()
+
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(
+                        this@AddExpenseActivity,
+                        "Gasto guardado exitosamente",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    finish()
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(
+                        this@AddExpenseActivity,
+                        "Error al guardar: ${e.message}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
         }
     }
 }

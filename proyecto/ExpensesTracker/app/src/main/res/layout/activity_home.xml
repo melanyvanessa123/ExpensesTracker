@@ -23,7 +23,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Saldo disponible"
+                android:text="Total de gastos registrados del mes"
                 android:textAlignment="center"
                 android:textColor="@color/text_secondary"
                 android:textSize="20sp" />

@@ -13,6 +13,6 @@ class FilterActivity : AppCompatActivity() {
         binding = ActivityFilterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Aquí luego irán las opciones de filtro por mes/categoría
+        //Filtros
     }
 }
