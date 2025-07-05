@@ -25,7 +25,6 @@ class HomeActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         expenseAdapter = ExpenseAdapter(emptyList()) { expense ->
-
             val intent = Intent(this, EditExpenseActivity::class.java)
             intent.putExtra("expenseId", expense.id)
             startActivity(intent)
@@ -33,6 +32,11 @@ class HomeActivity : AppCompatActivity() {
         binding.expensesRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.expensesRecyclerView.adapter = expenseAdapter
 
+        setupListeners()
+        cargarDatosDeFirestore()
+    }
+
+    private fun setupListeners() {
         binding.addExpenseButton.setOnClickListener {
             startActivity(Intent(this, AddExpenseActivity::class.java))
         }
@@ -42,8 +46,10 @@ class HomeActivity : AppCompatActivity() {
         binding.filterButton.setOnClickListener {
             startActivity(Intent(this, FilterActivity::class.java))
         }
-
-        cargarDatosDeFirestore()
+        // Nuevo botón para Billeteras
+        binding.walletButton.setOnClickListener {
+            startActivity(Intent(this, WalletActivity::class.java))
+        }
     }
 
     private fun cargarDatosDeFirestore() {

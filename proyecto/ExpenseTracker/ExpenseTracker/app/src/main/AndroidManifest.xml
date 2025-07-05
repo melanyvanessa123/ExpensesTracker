@@ -49,9 +49,16 @@
             android:name=".ui.FilterActivity"
             android:exported="false" />
 
-        <!-- AGREGADO: Activity de edición de gastos -->
         <activity
             android:name=".ui.EditExpenseActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.WalletActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.WalletDetailsActivity"
             android:exported="false" />
 
     </application>

@@ -58,6 +58,17 @@
             android:textColor="#FFFFFF"
             android:textStyle="bold"/>
 
+        <!-- Nuevo botón de billeteras -->
+        <Button
+            android:id="@+id/walletButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="BILLETERAS"
+            android:layout_marginBottom="10dp"
+            android:textColor="#2196F3"
+            android:backgroundTint="#FFFFFF"
+            android:textStyle="bold"/>
+
         <Button
             android:id="@+id/viewHistoryButton"
             android:layout_width="match_parent"
