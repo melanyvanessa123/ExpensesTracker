@@ -1,140 +1,224 @@
-<?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/background_soft_blue"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#F6F7FB">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="18dp"
+        android:padding="0dp"
         android:gravity="center_horizontal">
 
-
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="HOME"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:textColor="#24292F"
-            android:gravity="center"
-            android:layout_marginBottom="18dp"/>
+            android:layout_height="80dp"
+            android:background="@color/balance_soft_blue"
+            android:gravity="center_vertical"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp">
 
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_money"
+                android:tint="@color/white"
+                android:layout_marginEnd="12dp"/>
+
+            <TextView
+                android:id="@+id/headerTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mi billetera personal"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:fontFamily="sans-serif-medium"/>
+        </LinearLayout>
 
         <Spinner
             android:id="@+id/spinnerBilletera"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/box_white_rounded"/>
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/box_white_square"
+            android:padding="12dp"
+            />
 
 
-        <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/pieChart"
-            android:layout_width="260dp"
+        <FrameLayout
+            android:layout_width="match_parent"
             android:layout_height="260dp"
-            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
             android:layout_marginBottom="18dp"
-            android:background="@drawable/box_white_rounded"
-            android:elevation="2dp" />
+            android:layout_gravity="center_horizontal">
 
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/pieChart"
+                android:layout_width="240dp"
+                android:layout_height="240dp"
+                android:layout_gravity="center"
+                android:background="@drawable/card_shadow"
+                android:elevation="6dp"
+                />
+
+        </FrameLayout>
 
         <LinearLayout
             android:id="@+id/financialSummaryLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@drawable/box_white_rounded"
-            android:padding="18dp"
-            android:elevation="2dp"
-            android:layout_marginBottom="20dp">
-
+            android:background="@color/surface_gray"
+            android:elevation="8dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
+            android:padding="22dp"
+            android:clipToOutline="true"
+            android:layout_marginTop="12dp"
+            android:backgroundTint="@color/surface_gray">
 
             <TextView
                 android:id="@+id/ingresosLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="DATOS FINANCIEROS:"
-                android:textStyle="normal"
-                android:textSize="15sp"
-                android:textColor="#000000"/>
-            <TextView
-                android:id="@+id/ingresosTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="$0.00 USD"
-                android:textSize="18sp"
+                android:text="DATOS FINANCIEROS"
                 android:textStyle="bold"
-                android:textColor="#1565C0"
-                android:layout_marginBottom="10dp"/>
+                android:textSize="17sp"
+                android:textColor="@color/primary_dark_blue"
+                android:fontFamily="sans-serif-medium"
+                android:paddingBottom="4dp"/>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp">
 
-            <TextView
-                android:id="@+id/gastosLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="normal"
-                android:textSize="15sp"
-                android:textColor="#000000"/>
-            <TextView
-                android:id="@+id/gastosTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="$0.00 USD"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="#90A4AE"
-                android:layout_marginBottom="10dp"/>
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_trending_up"
+                    android:tint="@color/primary_blue"
+                    android:layout_marginEnd="10dp"/>
 
+                <TextView
+                    android:id="@+id/ingresosTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="$0.00 USD"
+                    android:textSize="19sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/primary_blue"
+                    android:fontFamily="sans-serif-medium"/>
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/balanceLabel"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textStyle="normal"
-                android:textSize="15sp"
-                android:textColor="#000000"/>
-            <TextView
-                android:id="@+id/balanceTextView"
-                android:layout_width="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_trending_down"
+                    android:tint="@color/balance_soft_blue"
+                    android:layout_marginEnd="10dp"/>
+
+                <TextView
+                    android:id="@+id/gastosTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="$0.00 USD"
+                    android:textSize="19sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/balance_soft_blue"
+                    android:fontFamily="sans-serif-medium"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/divider_gray"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="8dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="$0.00 USD"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="#000000"/>
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingTop="6dp"
+                android:paddingBottom="2dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_balance"
+                    android:tint="@color/balance_soft_blue"
+                    android:layout_marginEnd="10dp"/>
+
+                <TextView
+                    android:id="@+id/balanceTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="$0.00 USD"
+                    android:textSize="19sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/balance_soft_blue"
+                    android:fontFamily="sans-serif-medium"/>
+            </LinearLayout>
         </LinearLayout>
 
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/addExpenseButton"
+            style="@style/Widget.App.Button"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="56dp"
             android:text="AGREGAR NUEVO GASTO/INGRESO"
-            app:cornerRadius="24dp"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/white"
             android:textStyle="bold"
             android:fontFamily="sans-serif-medium"
+            android:backgroundTint="@color/blue_500"
+            app:cornerRadius="0dp"
+            app:icon="@drawable/ic_add"
+            app:iconTint="@color/white"
+            app:iconGravity="textStart"
+            app:iconPadding="8dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:layout_marginBottom="10dp"
-            android:backgroundTint="#2196F3"
             />
-
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/walletButton"
+            style="@style/Widget.App.Button"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="56dp"
             android:text="BILLETERAS"
-            app:cornerRadius="24dp"
-            android:textColor="#1565C0"
+            android:textColor="@color/white"
             android:textStyle="bold"
             android:fontFamily="sans-serif-medium"
-            android:layout_marginBottom="18dp"
-            android:backgroundTint="#FFFFFF"
-            app:strokeColor="#2196F3"
+            android:backgroundTint="@color/blue_500"
+            app:cornerRadius="0dp"
+            app:icon="@drawable/ic_category"
+            app:iconTint="@color/white"
+            app:iconGravity="textStart"
+            app:iconPadding="8dp"
+            app:strokeColor="@color/blue_500"
             app:strokeWidth="2dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="18dp"
             />
 
 
@@ -143,40 +227,59 @@
             android:layout_height="wrap_content"
             android:text="Últimos gastos"
             android:textStyle="bold"
-            android:textSize="17sp"
-            android:textColor="#24292F"
-            android:layout_marginTop="6dp"
+            android:textSize="18sp"
+            android:textColor="@color/text_normal"
+            android:layout_marginTop="12dp"
             android:layout_marginBottom="8dp"
-            android:gravity="start"/>
+            android:gravity="start"
+            android:fontFamily="sans-serif-medium"
+            android:paddingLeft="20dp"
+            />
 
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/expensesRecyclerView"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#00000000"
-            android:overScrollMode="never"
-            android:layout_marginBottom="14dp"/>
+            android:background="@drawable/card_shadow"
+            android:elevation="4dp"
+            android:padding="0dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="14dp"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/expensesRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:overScrollMode="never"
+                android:divider="@color/divider_gray"
+                android:dividerHeight="1dp"
+                android:padding="0dp"/>
+        </LinearLayout>
 
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Gastos Programados"
-            android:textStyle="bold"
-            android:textSize="17sp"
-            android:textColor="#24292F"
-            android:layout_marginTop="6dp"
-            android:layout_marginBottom="8dp"
-            android:gravity="start" />
+            android:background="@drawable/card_shadow"
+            android:elevation="4dp"
+            android:padding="0dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="14dp"
+            android:orientation="vertical">
 
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/scheduledExpensesRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#00000000"
-            android:overScrollMode="never"
-            android:layout_marginBottom="14dp"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/scheduledExpensesRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:overScrollMode="never"
+                android:divider="@color/divider_gray"
+                android:dividerHeight="1dp"
+                android:padding="0dp"/>
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

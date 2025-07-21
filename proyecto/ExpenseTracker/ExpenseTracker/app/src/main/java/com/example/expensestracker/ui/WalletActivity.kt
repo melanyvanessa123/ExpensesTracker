@@ -16,6 +16,7 @@ import com.example.expensestracker.network.AuthManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
@@ -24,6 +25,7 @@ class WalletActivity : AppCompatActivity() {
     private lateinit var binding: ActivityWalletBinding
     private lateinit var walletManager: WalletManager
     private lateinit var walletAdapter: WalletAdapter
+    private var walletJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +39,7 @@ class WalletActivity : AppCompatActivity() {
         }
 
         setupViews()
-        observeWallets()
+        recargarContadores()
     }
 
     private fun setupViews() {
@@ -59,28 +61,47 @@ class WalletActivity : AppCompatActivity() {
         }
     }
 
-    private fun observeWallets() {
-        lifecycleScope.launch {
+    private fun recargarContadores() {
+        walletJob?.cancel()
+        walletJob = lifecycleScope.launch {
             try {
                 walletManager.getUserWallets().collect { wallets ->
                     val walletsWithCounts = cargarContadoresPorWallet(wallets)
-                    walletAdapter.submitList(walletsWithCounts)
+                    withContext(Dispatchers.Main) {
+                        walletAdapter.submitList(walletsWithCounts)
+                    }
                 }
             } catch (e: Exception) {
-                Toast.makeText(this@WalletActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(this@WalletActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
 
+
+    override fun onResume() {
+        super.onResume()
+        recargarContadores()
+    }
+
     private suspend fun cargarContadoresPorWallet(wallets: List<Wallet>): List<WalletWithCounts> = withContext(Dispatchers.IO) {
         val db = FirebaseFirestore.getInstance()
+        val userId = AuthManager.getCurrentUserUid()
         wallets.map { wallet ->
             val expResult = db.collection("scheduled_expenses")
                 .whereEqualTo("billeteraId", wallet.id)
+                .whereEqualTo("userId", userId)
                 .get()
                 .await()
-            val pendientes = expResult.count { it.getString("estado") == "pendiente" }
-            val pagados = expResult.count { it.getString("estado") == "pagado" }
+
+            val pendientes = expResult.count {
+                it.getString("estado") == "pendiente"
+            }
+            val pagados = expResult.count {
+                it.getString("estado") == "pagado"
+            }
+
             WalletWithCounts(wallet, pendientes, pagados)
         }
     }
@@ -100,6 +121,7 @@ class WalletActivity : AppCompatActivity() {
                         try {
                             walletManager.createWallet(name)
                             Toast.makeText(this@WalletActivity, "Billetera creada", Toast.LENGTH_SHORT).show()
+                            recargarContadores()
                         } catch (e: Exception) {
                             Toast.makeText(this@WalletActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
                         }
@@ -126,6 +148,7 @@ class WalletActivity : AppCompatActivity() {
                         try {
                             walletManager.updateWalletName(wallet.id, newName)
                             Toast.makeText(this@WalletActivity, "Nombre actualizado", Toast.LENGTH_SHORT).show()
+                            recargarContadores()
                         } catch (e: Exception) {
                             Toast.makeText(this@WalletActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
                         }
@@ -147,6 +170,7 @@ class WalletActivity : AppCompatActivity() {
                     try {
                         walletManager.deleteWallet(wallet.id)
                         Toast.makeText(this@WalletActivity, "Billetera eliminada", Toast.LENGTH_SHORT).show()
+                        recargarContadores()
                     } catch (e: Exception) {
                         Toast.makeText(this@WalletActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
                     }
@@ -179,6 +203,7 @@ class WalletActivity : AppCompatActivity() {
                         walletManager.shareWallet(wallet.id, email, permission)
                         Toast.makeText(this@WalletActivity, "Billetera compartida", Toast.LENGTH_SHORT).show()
                         dialog.dismiss()
+                        recargarContadores()
                     } catch (e: Exception) {
                         Toast.makeText(this@WalletActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
                     }
@@ -192,8 +217,11 @@ class WalletActivity : AppCompatActivity() {
     }
 
     private fun openWalletDetails(wallet: Wallet) {
+        val userId = AuthManager.getCurrentUserUid() ?: ""
+        val permission = wallet.sharedWith[userId]?.name ?: "READ_WRITE"
         val intent = Intent(this, WalletDetailsActivity::class.java)
         intent.putExtra("walletId", wallet.id)
+        intent.putExtra("walletPermission", permission)
         startActivity(intent)
     }
 }

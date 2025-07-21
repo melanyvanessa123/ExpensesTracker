@@ -1,76 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:background="#F4F6FB"
-    android:padding="32dp"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal">
+    android:background="@color/celeste_fondo"
+    android:fillViewport="true">
 
-    <TextView
-        android:text="Editar gasto"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:textColor="#212121"
-        android:layout_marginBottom="32dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <EditText
-        android:id="@+id/etDescripcion"
-        android:hint="Descripción"
-        android:background="@android:color/white"
-        android:padding="14dp"
-        android:textSize="16sp"
-        android:layout_marginBottom="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="48dp" />
-
-    <EditText
-        android:id="@+id/etMonto"
-        android:hint="Monto"
-        android:inputType="numberDecimal"
-        android:background="@android:color/white"
-        android:padding="14dp"
-        android:textSize="16sp"
-        android:layout_marginBottom="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="48dp" />
-
-    <EditText
-        android:id="@+id/etFecha"
-        android:hint="Fecha"
-        android:focusable="false"
-        android:clickable="true"
-        android:background="@android:color/white"
-        android:padding="14dp"
-        android:textSize="16sp"
-        android:layout_marginBottom="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="48dp" />
-
-    <Spinner
-        android:id="@+id/spinnerCategoria"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="@android:color/white"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:layout_marginBottom="16dp"/>
-
-    <Button
-        android:id="@+id/btnGuardar"
-        android:text="GUARDAR CAMBIOS"
-        android:textAllCaps="true"
-        android:background="#1976D2"
-        android:textColor="#FFFFFF"
-        android:textSize="18sp"
-        android:layout_marginTop="14dp"
+    <LinearLayout
+        android:orientation="vertical"
+        android:padding="28dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="56dp"
-        android:paddingTop="14dp"
-        android:paddingBottom="14dp"
-        android:gravity="center" />
+        android:gravity="center_horizontal">
 
-</LinearLayout>
+        <TextView
+            android:text="Editar gasto"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/azul_titulo"
+            android:fontFamily="sans-serif-medium"
+            android:layout_marginBottom="28dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginBottom="16dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxStrokeColor="@color/celeste_borde"
+            app:boxBackgroundColor="@color/celeste_input"
+            app:boxCornerRadiusTopStart="0dp"
+            app:boxCornerRadiusTopEnd="0dp"
+            app:boxCornerRadiusBottomStart="0dp"
+            app:boxCornerRadiusBottomEnd="0dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etDescripcion"
+                android:hint="Descripción"
+                android:textSize="16sp"
+                android:textColor="@color/azul_titulo"
+                android:textColorHint="@color/azul_hint"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginBottom="16dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxStrokeColor="@color/celeste_borde"
+            app:boxBackgroundColor="@color/celeste_input"
+            app:boxCornerRadiusTopStart="0dp"
+            app:boxCornerRadiusTopEnd="0dp"
+            app:boxCornerRadiusBottomStart="0dp"
+            app:boxCornerRadiusBottomEnd="0dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etMonto"
+                android:hint="Monto"
+                android:inputType="numberDecimal"
+                android:textColor="@color/azul_titulo"
+                android:textColorHint="@color/azul_hint"
+                android:textSize="16sp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginBottom="16dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxStrokeColor="@color/celeste_borde"
+            app:boxBackgroundColor="@color/celeste_input"
+            app:boxCornerRadiusTopStart="0dp"
+            app:boxCornerRadiusTopEnd="0dp"
+            app:boxCornerRadiusBottomStart="0dp"
+            app:boxCornerRadiusBottomEnd="0dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etFecha"
+                android:hint="Fecha"
+                android:focusable="false"
+                android:clickable="true"
+                android:textSize="16sp"
+                android:textColor="@color/azul_titulo"
+                android:textColorHint="@color/azul_hint"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginBottom="18dp"
+            app:cardCornerRadius="0dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="@color/celeste_input">
+
+            <Spinner
+                android:id="@+id/spinnerCategoria"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:textAlignment="viewStart"
+                android:background="@android:color/transparent"/>
+        </androidx.cardview.widget.CardView>
+
+
+        <Button
+            android:id="@+id/btnGuardar"
+            android:text="GUARDAR CAMBIOS"
+            android:textAllCaps="true"
+            android:background="@drawable/bg_btn_celeste"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-medium"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:elevation="4dp"/>
+
+    </LinearLayout>
+</ScrollView>
